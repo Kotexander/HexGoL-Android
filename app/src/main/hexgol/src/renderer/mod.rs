@@ -4,7 +4,6 @@ use wgpu::util::DeviceExt;
 #[derive(Copy, Clone, Debug, bytemuck::Pod, bytemuck::Zeroable)]
 pub struct Vertex {
     pos: [f32; 2],
-    // color: [f32; 3],
 }
 impl Vertex {
     const fn new(pos: [f32; 2]) -> Self {
@@ -33,19 +32,6 @@ impl CameraTransform {
     fn new(scale: [f32; 2], offset: [f32; 2]) -> Self {
         Self { scale, offset }
     }
-
-    // const ATTRIBS: [wgpu::VertexAttribute; 2] =
-    //     wgpu::vertex_attr_array![0 => Float32x2, 1 => Float32x2];
-
-    // fn desc<'a>() -> wgpu::VertexBufferLayout<'a> {
-    //     use std::mem;
-
-    //     wgpu::VertexBufferLayout {
-    //         array_stride: mem::size_of::<Self>() as wgpu::BufferAddress,
-    //         step_mode: wgpu::VertexStepMode::Vertex,
-    //         attributes: &Self::ATTRIBS,
-    //     }
-    // }
 }
 
 pub struct MeshBuilder {
@@ -99,11 +85,6 @@ impl Mesh {
     pub fn new(vb: wgpu::Buffer, ib: wgpu::Buffer, indices: u32) -> Self {
         Self { vb, ib, indices }
     }
-    // pub fn draw<'a>(&'a self, render_pass: &mut wgpu::RenderPass<'a>) {
-    //     render_pass.set_vertex_buffer(0, self.vb.slice(..));
-    //     render_pass.set_index_buffer(self.ib.slice(..), wgpu::IndexFormat::Uint16);
-    //     render_pass.draw_indexed(0..self.indices, 0, 0..1);
-    // }
 }
 
 #[repr(C)]
@@ -137,7 +118,6 @@ impl Instance {
 }
 pub struct InstancedMesh {
     mesh: Mesh,
-    // instances: Vec<Transform>,
     instance_buffer: wgpu::Buffer,
     num_instances: u32,
 }
@@ -188,7 +168,6 @@ struct Frame {
     output: wgpu::SurfaceTexture,
     view: wgpu::TextureView,
     encoder: wgpu::CommandEncoder,
-    // render_pass: Option<wgpu::RenderPass<'a>>,
 }
 
 pub struct Graphics {
@@ -207,13 +186,6 @@ impl Graphics {
     where
         W: raw_window_handle::HasRawWindowHandle + raw_window_handle::HasRawDisplayHandle,
     {
-        // if size.width == 0 {
-        //     size.width = 1;
-        // }
-        // if size.height == 0 {
-        //     size.height = 1;
-        // }
-
         // The instance is a handle to our GPU
         let instance = wgpu::Instance::new(wgpu::Backends::VULKAN);
 
@@ -327,7 +299,7 @@ impl Graphics {
                     topology: wgpu::PrimitiveTopology::TriangleStrip,
                     strip_index_format: None,
                     front_face: wgpu::FrontFace::Cw,
-                    cull_mode: None, //Some(wgpu::Face::Back),
+                    cull_mode: None,
                     // Setting this to anything other than Fill requires Features::NON_FILL_POLYGON_MODE
                     polygon_mode: wgpu::PolygonMode::Fill,
                     // Requires Features::DEPTH_CLIP_CONTROL
@@ -413,7 +385,6 @@ impl Graphics {
     }
 
     pub fn resize(&mut self, new_size: [u32; 2]) {
-        // self.size = new_size;
         self.config.width = new_size[0];
         self.config.height = new_size[1];
         self.ctx.surface.configure(&self.ctx.device, &self.config);
