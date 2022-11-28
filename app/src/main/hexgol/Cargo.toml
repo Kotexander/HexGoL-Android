@@ -1,0 +1,26 @@
+[package]
+name = "hexgol"
+version = "0.1.0"
+edition = "2021"
+
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+
+[dependencies]
+android_logger = "0.11.1"
+bytemuck = { version = "1.12.3", features = ["derive"] }
+jni = "0.20.0"
+libc = "0.2.137"
+log = "0.4.17"
+ndk-sys = "0.4.1"
+pollster = "0.2.5"
+rand = "0.8.5"
+raw-window-handle = "0.5.0"
+wgpu = "0.14.0"
+
+[lib]
+crate-type = ["cdylib"]
+
+
+[build-dependencies]
+cc = { version = "1.0.77", features = ["parallel"] }
+
